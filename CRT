@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <bits/stdc++.h> 
+using namespace std;
+typedef long long int llt;
+
+bool check(vector<llt> A)
+{
+    int i,l = A.size();
+    sort(A.begin(),A.end());
+    for(i = 0; i<l-1; i++)
+        if(A[i] == A[i+1])
+            return 0;
+    return 1;
+}
+
+int main() 
+{
+    llt T,i,j,rem,num,n,M,l;
+    vector<llt> prime;
+    vector<llt> vrem;
+    vector<llt> vremcopy;
+    string str;
+    cin>>T;
+    
+    for(i=0; i<T; i++)
+    {
+        j = 2;
+        cout<<1<<" "<<31623<<endl;
+        fflush(stdout);
+        cin>>rem;
+        if(rem == -1)
+            return 0;
+        num = 31623*31623-rem;
+        
+        while(j<=(llt)(sqrt(num)))
+        {
+            if(num%j == 0)
+                prime.push_back(j);// stores possible prime numbers
+            while(num%j == 0)
+                num = num/j;
+            j++;
+        }
+        
+        if(num>1)
+            prime.push_back(num);
+        l = prime.size()-2;//Locaton of last but 1 
+        M = (llt)(sqrt(prime[l]))+1;
+        
+        while(M*M<1000000000)
+        {
+            for(j = 0; j<prime.size(); j++)
+                vrem.push_back((M*M)%prime[j]);
+            vremcopy = vrem;
+            if(check(vremcopy));
+                break;
+            M++;
+        }
+        
+        if(M*M > 1000000000)
+            return 0;
+        cout<<1<<" "<<M<<endl;
+        fflush(stdout);
+        cin>>rem;
+        
+        if(rem == -1)
+            return 0;
+        
+        for(j=0; j<vrem.size(); j++)
+        {
+            if(vrem[j] == rem)
+            {
+                cout<<2<<" "<<prime[j]<<endl;
+                fflush(stdout);
+                cin>>str;
+                if(str == "No")
+                    return 0;
+            }
+        }
+        prime.clear();
+        vrem.clear();
+        vremcopy.clear();
+    }
+	return 0;
+}
